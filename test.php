@@ -1,28 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<title>BackStore</title>
+</head>
+<body>
 <?php 
-	main();	
-	function main() {
-		$num = 2;
-		$data = create_data($num);
+	main($argv);
+	// inportCsv();
+	function main($argv) {
+		var_dump($argv);
+		$num = $argv[1];
+		var_dump($num);
+		$data = createData($num);
+		// $check_data = isUniqueArray($data);
+		// var_dump($check_data);
+		// if ($check_data == false) {
+		// 	main();
+		// }
 		var_dump($data);
-		export_csv($data);
+		exportCsv($data);
 	}
 
-	function create_data($num) {
-		$limit = 8;
+	function createData($num) {
 		$ar1 = range('a', 'z');
 		$ar2 = range('A', 'Z');
 		$ar3 = range(0, 9);
 		$ar_all = array_merge($ar1, $ar2, $ar3);
+		$email_array = randomstring($ar_all, $num);
+		var_dump($email_array);
 		$exclusion = array('l', 'I', 'O', 1, 0);
 		$pass_nums = array_diff($ar_all, $exclusion);
+		$pass_array = randomstring($pass_nums, $num);
 		$data = array();
-		for ($i=0; $i < $num; $i++) {
-			shuffle($ar_all);
-			$rand_num = substr(implode($ar_all), 0, $limit);
-			$email = $rand_num . "@backstore.jp";
-			shuffle($pass_nums);
-			$rand_num = substr(implode($pass_nums), 0, $limit);
-			$pass = $rand_num;
+		for ($i=0; $i < $num; $i++) {			
+			$email = $email_array[$i] . "@backstore.jp";
+			$pass = $pass_array[$i];
 			$user = array("email" => $email,
 						  "pass" => $pass);
 			array_push($data, $user);
@@ -30,7 +43,23 @@
 		return $data;
 	}
 
-	function export_csv($data) {
+	function randomstring($strings, $num) {
+		$array = array();
+		$limit = 8;
+		while (true) {
+			shuffle($strings);
+			$rand_num = substr(implode($strings), 0, $limit);
+			if (in_array($rand_num, $array) == false) {
+				array_push($array, $rand_num);
+			}
+			if (count($array) == $num) {
+				break;
+			}
+		}
+		return $array;
+	}
+
+	function exportCsv($data) {
 		$file = fopen("test.csv", "w");
 		if( $file ){
 		  foreach ($data as $user) {
@@ -40,6 +69,53 @@
 		  }
 		}
 		fclose($file);
-
 	}
+
+	function inportCsv() {
+		$file_name = "test2.csv";
+		$file = fopen($file_name, "r");
+		if( $file ){
+			while( $ret_csv = fgetcsv( $file, 256 ) ) {
+				$ret = count( $ret_csv );
+				for($i = 0; $i < $ret; ++$i ){
+				echo $ret_csv[$i];
+				}
+				// $exclusion = array('l', 'I', 'O', 1, 0);
+				// if (strstr($email, '@backstore.jp') && strlen($email) == 21 && strlen($pass) == 8) {
+				// }
+				if (preg_match('|^[0-9a-z_./?-]+@([0-9a-z-]+\.)+[0-9a-z-]+$|', $email)) {
+					$email = $email;
+				}
+				echo("\n");
+			}
+		}
+		fclose($file);
+	}
+
+	function isUniqueArray ($data) {
+		while (true) {
+			foreach ($data as $user) {
+			$email_array[] = $user["email"];
+			$pass_array[] = $user["pass"];
+			}
+			$unique_email_array = array_unique($email_array);
+			$unique_pass_array = array_unique($pass_array);
+			if (count($unique_email_array) === count($email_array) && count($unique_pass_array) === count($pass_array)) {
+			  break;
+			} else {
+				shuffle($ar_all);
+				$rand_num = substr(implode($ar_all), 0, $limit);
+				$email = $rand_num . "@backstore.jp";
+				shuffle($pass_nums);
+				$rand_num = substr(implode($pass_nums), 0, $limit);
+				$pass = $rand_num;
+				$user = array("email" => $email,
+							  "pass" => $pass);
+				array_push($data, $user);
+			}
+		}
+	}
+
 ?>
+</body>
+</html>

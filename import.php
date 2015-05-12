@@ -24,24 +24,15 @@
 			while( $ret_csv = fgetcsv( $file, 256, "," ) ) {
 				$ret = count( $ret_csv );
 				for($i = 0; $i < $ret; $i++ ){
-					// echo $ret_csv[$i] . "\n";
 				}
 				$email = $ret_csv[0];
 				$pass = $ret_csv[1];
-				// $exclusion = array('l', 'I', 'O', 1, 0);
-				// if (strstr($email, '@backstore.jp') && strlen($email) == 21 && strlen($pass) == 8) {
-				// }
-				// if (preg_match('|^[a-zA-Z0-9/?-]+@([a-zA-Z0-9]+\.)+[a-zA-Z0-9]+$|', $email)) {
-				// 	$email = $email;
-				// }
 				if (isValidEmail($email) == ture && isValidPassword($pass) == true) {
 					$true_data++;
-					// echo $email . ", " . $pass;
 				} else {
 					$false_data++;
 					echo "NGリスト" . $email . ", " . $pass;
 					echo "<br>";
-					// echo("\n");
 				}
 			}
 			echo "true:" . $true_data ."\n";

@@ -22,7 +22,6 @@
 		}
 		main($_POST['num']);
 	}
-	// inportCsv();
 	function main($num) {
 		$data = createData($num);
 		exportCsv($data);
@@ -69,7 +68,6 @@
 		if( $file ){
 		  foreach ($data as $user) {
 		  	$str = $user["email"] . ',' . $user["pass"] . "\n";
-  		  	// fputcsv($file, $str);
   		  	fputs($file, $str);
 		  }
 		}

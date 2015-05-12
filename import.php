@@ -1,8 +1,22 @@
-<?php
-	importCsv($argv);
-
-	function importCsv($argv) {
-		$file_name = $argv[1];
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<?php
+	move_file($_FILES["upfile"]);
+	function move_file($upfile) {
+		if ( $_FILES['upfile']['error'] == UPLOAD_ERR_OK ) {
+		    $upload_file = "csv_files/" . $_FILES["upfile"]["name"];
+		    if ( move_uploaded_file( $_FILES["upfile"]['tmp_name'], $upload_file ) ){
+    			importCsv($upload_file);
+		    }
+		}
+	}
+	function importCsv($upfile) {
+		$file_name = $upfile;
 		$file = fopen($file_name, "r");
 		if( $file ){
 			$true_data = 0;
@@ -26,11 +40,14 @@
 				} else {
 					$false_data++;
 					echo "NGリスト" . $email . ", " . $pass;
-					echo("\n");
+					echo "<br>";
+					// echo("\n");
 				}
 			}
 			echo "true:" . $true_data ."\n";
 			echo "false:" . $false_data;
+			echo "<br>";
+			echo '<a href="import.html">戻る</a>';
 		}
 		fclose($file);
 	}
@@ -65,4 +82,5 @@
 		return true;
 	}
 ?>
-
+</body>
+</html>

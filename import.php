@@ -1,5 +1,6 @@
 <?php
 	importCsv($argv);
+
 	function importCsv($argv) {
 		$file_name = $argv[1];
 		$file = fopen($file_name, "r");
@@ -19,7 +20,7 @@
 				// if (preg_match('|^[a-zA-Z0-9/?-]+@([a-zA-Z0-9]+\.)+[a-zA-Z0-9]+$|', $email)) {
 				// 	$email = $email;
 				// }
-				if (is_valid_email($email) === ture && is_valid_password($pass) === true) {
+				if (isValidEmail($email) == ture && isValidPassword($pass) == true) {
 					$true_data++;
 					// echo $email . ", " . $pass;
 				} else {
@@ -34,21 +35,26 @@
 		fclose($file);
 	}
 
-	function is_valid_email($email) {
+	function isValidEmail($email) {
 		if (strstr($email,"@") === "@backstore.jp") {
 			$explode_email = explode("@", $email);
 			if (ctype_alnum($explode_email[0])) {
-				return ture;
+				if (strlen($explode_email[0]) == 8) {
+					return ture;
+				}
 			}
 		}
 		return false;
 	}
-	function is_valid_password($pass) {
+
+	function isValidPassword($pass) {
 		if (ctype_alnum($pass)) {
 			$array = str_split($pass);
  			$exclusion = array('l', 'I', 'O', '1', '0');
- 			if (in_array($array, $exclusion) === false) {
- 				return true;
+ 			if (in_array($array, $exclusion) == false) {
+ 				if (strlen($pass) == 8) {
+	 				return true;
+ 				}
  			}
 		}
 		return false;

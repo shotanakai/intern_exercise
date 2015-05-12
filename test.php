@@ -8,8 +8,7 @@
 <?php 
 	main($argv);
 	// inportCsv();
-	function main($argv) {
-		var_dump($argv);
+	function main($argv) {var_dump($argv);
 		$num = $argv[1];
 		var_dump($num);
 		$data = createData($num);
@@ -25,11 +24,11 @@
 	function createData($num) {
 		$ar1 = range('a', 'z');
 		$ar2 = range('A', 'Z');
-		$ar3 = range(0, 9);
+		$ar3 = range('0', '9');
 		$ar_all = array_merge($ar1, $ar2, $ar3);
 		$email_array = randomstring($ar_all, $num);
 		var_dump($email_array);
-		$exclusion = array('l', 'I', 'O', 1, 0);
+		$exclusion = array('l', 'I', 'O', '1', '0');
 		$pass_nums = array_diff($ar_all, $exclusion);
 		$pass_array = randomstring($pass_nums, $num);
 		$data = array();
@@ -67,27 +66,6 @@
   		  	// fputcsv($file, $str);
   		  	fputs($file, $str);
 		  }
-		}
-		fclose($file);
-	}
-
-	function inportCsv() {
-		$file_name = "test2.csv";
-		$file = fopen($file_name, "r");
-		if( $file ){
-			while( $ret_csv = fgetcsv( $file, 256 ) ) {
-				$ret = count( $ret_csv );
-				for($i = 0; $i < $ret; ++$i ){
-				echo $ret_csv[$i];
-				}
-				// $exclusion = array('l', 'I', 'O', 1, 0);
-				// if (strstr($email, '@backstore.jp') && strlen($email) == 21 && strlen($pass) == 8) {
-				// }
-				if (preg_match('|^[0-9a-z_./?-]+@([0-9a-z-]+\.)+[0-9a-z-]+$|', $email)) {
-					$email = $email;
-				}
-				echo("\n");
-			}
 		}
 		fclose($file);
 	}

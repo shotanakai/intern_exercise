@@ -29,8 +29,8 @@
 					echo("\n");
 				}
 			}
-			echo $true_data ."\n";
-			echo $false_data;
+			echo "true:" . $true_data ."\n";
+			echo "false:" . $false_data;
 		}
 		fclose($file);
 	}
@@ -48,16 +48,21 @@
 	}
 
 	function isValidPassword($pass) {
-		if (ctype_alnum($pass)) {
-			$array = str_split($pass);
- 			$exclusion = array('l', 'I', 'O', '1', '0');
- 			if (in_array($array, $exclusion) == false) {
- 				if (strlen($pass) == 8) {
-	 				return true;
- 				}
- 			}
+		if (strlen($pass) != 8) {
+			return false;
 		}
-		return false;
+		if (ctype_alnum($pass) == false) {
+			return false;
+		}
+		$array = str_split($pass);
+		$exclusion = array('l', 'I', 'O', '1', '0');
+		$check_flag = 0;
+		foreach ($array as $key) {
+			if (in_array($key, $exclusion) == true) {
+				return false;
+			}
+		}
+		return true;
 	}
 ?>
 

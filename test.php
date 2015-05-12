@@ -5,8 +5,23 @@
 	<title>BackStore</title>
 </head>
 <body>
-<?php 
-	main($_POST['num']);
+<?php
+	validation($_POST['num']);
+	function validation($num) {
+		if (ctype_digit($num) == false) {
+			echo "正の整数を入力してください";
+			echo "<br>";
+			echo '<a href="test.html">戻る</a>';
+			return false;
+		}
+		if ($num > 200) {
+			echo "一度に生成できるのは200件までです";
+			echo "<br>";
+			echo '<a href="test.html">戻る</a>';
+		 	return false;
+		}
+		main($_POST['num']);
+	}
 	// inportCsv();
 	function main($num) {
 		$data = createData($num);

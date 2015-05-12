@@ -6,18 +6,10 @@
 </head>
 <body>
 <?php 
-	main($argv);
+	main($_POST['num']);
 	// inportCsv();
-	function main($argv) {var_dump($argv);
-		$num = $argv[1];
-		var_dump($num);
+	function main($num) {
 		$data = createData($num);
-		// $check_data = isUniqueArray($data);
-		// var_dump($check_data);
-		// if ($check_data == false) {
-		// 	main();
-		// }
-		var_dump($data);
 		exportCsv($data);
 	}
 
@@ -27,7 +19,6 @@
 		$ar3 = range('0', '9');
 		$ar_all = array_merge($ar1, $ar2, $ar3);
 		$email_array = randomstring($ar_all, $num);
-		var_dump($email_array);
 		$exclusion = array('l', 'I', 'O', '1', '0');
 		$pass_nums = array_diff($ar_all, $exclusion);
 		$pass_array = randomstring($pass_nums, $num);
@@ -68,32 +59,10 @@
 		  }
 		}
 		fclose($file);
+		echo '<a href="download.php">データをダウンロード</a>';
+		echo '<br>';
+		echo '<a href="test.html">戻る</a>';
 	}
-
-	function isUniqueArray ($data) {
-		while (true) {
-			foreach ($data as $user) {
-			$email_array[] = $user["email"];
-			$pass_array[] = $user["pass"];
-			}
-			$unique_email_array = array_unique($email_array);
-			$unique_pass_array = array_unique($pass_array);
-			if (count($unique_email_array) === count($email_array) && count($unique_pass_array) === count($pass_array)) {
-			  break;
-			} else {
-				shuffle($ar_all);
-				$rand_num = substr(implode($ar_all), 0, $limit);
-				$email = $rand_num . "@backstore.jp";
-				shuffle($pass_nums);
-				$rand_num = substr(implode($pass_nums), 0, $limit);
-				$pass = $rand_num;
-				$user = array("email" => $email,
-							  "pass" => $pass);
-				array_push($data, $user);
-			}
-		}
-	}
-
 ?>
 </body>
 </html>
